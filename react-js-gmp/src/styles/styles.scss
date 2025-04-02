@@ -70,3 +70,64 @@ h1 {
     }
   }
 }
+
+.movie-tile {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.movie-image {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.context-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.context-menu-popup {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  z-index: 10;
+
+  button {
+    padding: 8px;
+    width: 100px;
+    border: none;
+    background-color: #f4f4f4;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
+
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 20px;
+}

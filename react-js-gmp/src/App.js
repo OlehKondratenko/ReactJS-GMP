@@ -1,21 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Counter from "./components/Counter";
 import GenreSelect from "./components/GenreSelect";
 import "./styles/styles.scss";
-import fetchMovies from "./services/movieService";
 import SearchForm from "./components/SearchForm";
+import MovieGrid from "./components/MovieGrid";
+import { fetchMovies, moviesList } from "./services/movieService";
 
 export default function App() {
   const [search, setSearch] = useState("Comedy");
   const [selectedGenre, setSelectedGenre] = useState("All");
+  const [movies, setMovies] = useState([]);
   const genres = ["All", "Action", "Drama", "Comedy", "Horror"];
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
-    fetchMovies(selectedGenre, "genres");
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    const fetchMoviesByGenre = async () => {
+      await fetchMovies(selectedGenre, "genres");
+      setMovies(moviesList);
+    };
+    fetchMoviesByGenre();
   }, [selectedGenre]);
 
   useEffect(() => {
-    fetchMovies(search, "title");
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    const fetchMoviesByTitle = async () => {
+      await fetchMovies(search, "title");
+      setMovies(moviesList);
+    };
+    console.log("search by title", search);
+    fetchMoviesByTitle();
   }, [search]);
 
   const handleSearch = (query) => {
@@ -24,6 +44,10 @@ export default function App() {
 
   const handleGenreChange = (genre) => {
     setSelectedGenre(genre);
+  };
+
+  const handleMovieClick = (id) => {
+    console.log("Movie clicked with ID:", id);
   };
 
   return (
@@ -38,6 +62,7 @@ export default function App() {
       />
       <p>Search: {search}</p>
       <p>Selected Genre: {selectedGenre}</p>
+      <MovieGrid movies={movies} onMovieClick={handleMovieClick} />
     </div>
   );
 }
